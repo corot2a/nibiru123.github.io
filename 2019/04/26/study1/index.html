@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Hibernate学习笔记（1） | 小溪的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="前言：说实话，建这博客的目的就是为了记录自己的学习和生活，然并卵。。。。我好像忘了它的存在，一直在我github上挂着，下午抽出来时间搞了一下博客中的评价系统，我也不知道到底能不能用- -，而且其他一些功能我还没有研究透，慢慢来咯~ 最近在学习SSH框架，其中Struts2已经学完了，但是学的不怎么样，估计还要再重新学一遍- -。等把hibernate搞完在写Struts2的学习笔记吧。（刚开始学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate学习笔记（1）">
+<meta property="og:url" content="https://nibiru123.github.io/2019/04/26/study1/index.html">
+<meta property="og:site_name" content="小溪的博客">
+<meta property="og:description" content="前言：说实话，建这博客的目的就是为了记录自己的学习和生活，然并卵。。。。我好像忘了它的存在，一直在我github上挂着，下午抽出来时间搞了一下博客中的评价系统，我也不知道到底能不能用- -，而且其他一些功能我还没有研究透，慢慢来咯~ 最近在学习SSH框架，其中Struts2已经学完了，但是学的不怎么样，估计还要再重新学一遍- -。等把hibernate搞完在写Struts2的学习笔记吧。（刚开始学">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/26/study1/1.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/26/study1/2.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/26/study1/3.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/26/study1/4.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/26/study1/5.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/26/study1/6.png">
+<meta property="og:updated_time" content="2019-04-26T12:31:03.762Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hibernate学习笔记（1）">
+<meta name="twitter:description" content="前言：说实话，建这博客的目的就是为了记录自己的学习和生活，然并卵。。。。我好像忘了它的存在，一直在我github上挂着，下午抽出来时间搞了一下博客中的评价系统，我也不知道到底能不能用- -，而且其他一些功能我还没有研究透，慢慢来咯~ 最近在学习SSH框架，其中Struts2已经学完了，但是学的不怎么样，估计还要再重新学一遍- -。等把hibernate搞完在写Struts2的学习笔记吧。（刚开始学">
+<meta name="twitter:image" content="https://nibiru123.github.io/2019/04/26/study1/1.png">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Nibiru</h5>
+          <a href="mailto:274708301@qq.com" title="274708301@qq.com" class="mail">274708301@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                文章列表
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/u/6709820021" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://user.qzone.qq.com/274708301">
+                <i class="icon icon-lg icon-link"></i>
+                QQ空间
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Hibernate学习笔记（1）</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Hibernate学习笔记（1）</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-26T12:30:20.000Z" itemprop="datePublished" class="page-time">
+  2019-04-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言："><span class="post-toc-number">1.</span> <span class="post-toc-text">前言：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JAVA-EE开发的结构："><span class="post-toc-number">2.</span> <span class="post-toc-text">JAVA EE开发的结构：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate简介"><span class="post-toc-number">3.</span> <span class="post-toc-text">Hibernate简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate环境搭建过程"><span class="post-toc-number">4.</span> <span class="post-toc-text">Hibernate环境搭建过程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate优势"><span class="post-toc-number">5.</span> <span class="post-toc-text">Hibernate优势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习过程"><span class="post-toc-number">6.</span> <span class="post-toc-text">学习过程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-先来看实体类："><span class="post-toc-number">6.1.</span> <span class="post-toc-text">1.先来看实体类：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-实体类创建完毕，接下来我们要创建配置文件，让它与数据库中的表进行对应"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">2.实体类创建完毕，接下来我们要创建配置文件，让它与数据库中的表进行对应</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Hibernate核心配置文件"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">Hibernate核心配置文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编写测试代码"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">编写测试代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">7.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-study1" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Hibernate学习笔记（1）</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-26 20:30:20" datetime="2019-04-26T12:30:20.000Z" itemprop="datePublished">2019-04-26</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>说实话，建这博客的目的就是为了记录自己的学习和生活，然并卵。。。。我好像忘了它的存在，一直在我github上挂着，下午抽出来时间搞了一下博客中的评价系统，我也不知道到底能不能用- -，而且其他一些功能我还没有研究透，慢慢来咯~</p>
+<p>最近在学习SSH框架，其中Struts2已经学完了，但是学的不怎么样，估计还要再重新学一遍- -。等把hibernate搞完在写Struts2的学习笔记吧。（刚开始学，内容难免有不准确的地方，等到学完回头来看看再修改啦！）</p>
+<h2 id="JAVA-EE开发的结构："><a href="#JAVA-EE开发的结构：" class="headerlink" title="JAVA EE开发的结构："></a>JAVA EE开发的结构：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">web层，业务层，持久层是EE开发中经典的三层结构</span><br><span class="line">web层：servlet+jsp，Struts1，2，Spring mvc</span><br><span class="line">业务层：Javabean，spring</span><br><span class="line">持久层：JDBC，hibernate，mybatis</span><br></pre></td></tr></table></figure>
+<h2 id="Hibernate简介"><a href="#Hibernate简介" class="headerlink" title="Hibernate简介"></a>Hibernate简介</h2><p>Hibernate处于ee开发结构的持久层（DAO层），他使用ORM思想对数据库进行crud（增删改查）操作。<br>那么什么是ORM呢？</p>
+<p>orm就是对象关系映射，什么是对象关系映射呢？我个人的理解就是让实体类，也就是Javabean中的内容，与数据库中的内容进行一一对应，让实体类与数据库中的表对应，实体类里面的内容与数据库中的内容对应，这样，我们在操作数据库中内容的时候，就不用直接操作数据库中的表了，直接操作实体类中的对象、<br>而这对应的过程是使用配置文件来完成的。</p>
+<h2 id="Hibernate环境搭建过程"><a href="#Hibernate环境搭建过程" class="headerlink" title="Hibernate环境搭建过程"></a>Hibernate环境搭建过程</h2><p>我是用Intellij IDE来学习Hibernate的，其实老师上课一直在用myeclipise，各种导包，导入约束，我觉得这种过程只需要做一次自己知道的大概就行了，不用每次都在这地方浪费时间，intellij ide的好处就是可以自动导包，比myeclipise简化多了，时间也节省了- -这里我就不多说了</p>
+<p>没有对比就没有伤害，如下图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/study1/1.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/study1/2.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="Hibernate优势"><a href="#Hibernate优势" class="headerlink" title="Hibernate优势"></a>Hibernate优势</h2><p>1.Hibernate对jdbc访问数据库的代码进行了封装，终于可以不用写繁琐的重复性的sql代码了- -<br>2.不知道了</p>
+<h2 id="学习过程"><a href="#学习过程" class="headerlink" title="学习过程"></a>学习过程</h2><p>开头已经说了，我们首先要有一个实体类（JavaBean）<br>这里我没有在数据库中先创建表，因为Hibernate框架会根据后面的配置文件自动在数据库中创建表</p>
+<h3 id="1-先来看实体类："><a href="#1-先来看实体类：" class="headerlink" title="1.先来看实体类："></a>1.先来看实体类：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">//实体类，要与数据库表中名称一一对应</span><br><span class="line">/*这些属性通过getter和setter方法来访问，对外部隐藏了内部是实现细节*/</span><br><span class="line">public class Customer &#123;</span><br><span class="line">    private Long   cust_id;</span><br><span class="line">    private String cust_name;</span><br><span class="line">    private String cust_source;</span><br><span class="line">    private String cust_industry;</span><br><span class="line">    private String cust_level;</span><br><span class="line">    private String cust_phone;</span><br><span class="line">    private String cust_mobile;</span><br><span class="line"></span><br><span class="line">    public Long getCust_id() &#123;</span><br><span class="line">        return cust_id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_id(Long cust_id) &#123;</span><br><span class="line">        this.cust_id = cust_id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCust_name() &#123;</span><br><span class="line">        return cust_name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_name(String cust_name) &#123;</span><br><span class="line">        this.cust_name = cust_name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCust_source() &#123;</span><br><span class="line">        return cust_source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_source(String cust_source) &#123;</span><br><span class="line">        this.cust_source = cust_source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCust_industry() &#123;</span><br><span class="line">        return cust_industry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_industry(String cust_industry) &#123;</span><br><span class="line">        this.cust_industry = cust_industry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCust_level() &#123;</span><br><span class="line">        return cust_level;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_level(String cust_level) &#123;</span><br><span class="line">        this.cust_level = cust_level;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCust_phone() &#123;</span><br><span class="line">        return cust_phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_phone(String cust_phone) &#123;</span><br><span class="line">        this.cust_phone = cust_phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCust_mobile() &#123;</span><br><span class="line">        return cust_mobile;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCust_mobile(String cust_mobile) &#123;</span><br><span class="line">        this.cust_mobile = cust_mobile;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-实体类创建完毕，接下来我们要创建配置文件，让它与数据库中的表进行对应"><a href="#2-实体类创建完毕，接下来我们要创建配置文件，让它与数据库中的表进行对应" class="headerlink" title="2.实体类创建完毕，接下来我们要创建配置文件，让它与数据库中的表进行对应"></a>2.实体类创建完毕，接下来我们要创建配置文件，让它与数据库中的表进行对应</h3><p>在实体类所在的包中，创建一个名称为 实体类名称+hbm.xml的映射文件，在这个映射文件中，定义了实体类中的属性是如何映射到数据库中的表的，在这里我的映射文件名称为：Custome+hbm.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;hibernate-mapping&gt;</span><br><span class="line">    &lt;class name=&quot;cn.lcx.domain.Customer&quot; table=&quot;cst_customer&quot;&gt;</span><br><span class="line">        &lt;id name=&quot;cust_id&quot; column=&quot;cust_id&quot;&gt;</span><br><span class="line">            &lt;generator class=&quot;native&quot;/&gt;</span><br><span class="line">        &lt;/id&gt;</span><br><span class="line">        &lt;property name=&quot;cust_name&quot; column=&quot;cust_name&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;cust_source&quot; column=&quot;cust_source&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;cust_industry&quot; column=&quot;cust_industry&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;cust_level&quot; column=&quot;cust_level&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;cust_phone&quot; column=&quot;cust_phone&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;cust_mobile&quot; column=&quot;cust_mobile&quot;/&gt;</span><br><span class="line">    &lt;/class&gt;</span><br><span class="line">&lt;/hibernate-mapping&gt;</span><br></pre></td></tr></table></figure>
+<p>我来对上面的表进行一些说明：</p>
+<p>class标签是用来建立实体类和数据库表中的映射的</p>
+<p>name：实体类的路径，这个不用多解释，你总要告诉是哪个实体类吧，注意名称必须是全路径</p>
+<p>table：看名字就知道是数据库的表了，也就是实体类所对应的那个表，这里表的名称为cst_customer，数据库还没有指定，在后面的会说到</p>
+<p>catalog：这个属性就是指定数据库了，可以省略，这里我没有写，因为后面的配置文件会指定-</p>
+<p>id标签是用来指定类中的属性和表中的主键相对应，说白了就是建立主键的，什么是主键- -这个我就不多说了，主键是唯一的。</p>
+<p>name:这个是指类中的属性名</p>
+<p>column：这个是指表中的名，如果实体类中的名字和表中的名字相同可以省略，不过我没测试，我觉得还是不要省略吧，便与检查</p>
+<p>length：字段的长度啦，除非有特殊的，这个默认就好</p>
+<p>type：类型啦，对应sql的类型，没什么多说点</p>
+<p>&lt; generator class=“native”/&gt; 这个是主键生成策略，native为自动增长，就是123456这样增长下去，后面肯定还有不同的增长策略，我还没有学习到- -。等再补充</p>
+<p>property标签，就是建立类中的普通属性与数据库表中的标签相对应，这个很好理解</p>
+<h3 id="Hibernate核心配置文件"><a href="#Hibernate核心配置文件" class="headerlink" title="Hibernate核心配置文件"></a>Hibernate核心配置文件</h3><p>以上的内容是实体类与数据库中的表来建立映射关系，我上面有说，我们还没有指定是哪个数据库，这里就是来配置数据库连接的，首先来看代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&apos;1.0&apos; encoding=&apos;utf-8&apos;?&gt;</span><br><span class="line">&lt;!DOCTYPE hibernate-configuration PUBLIC</span><br><span class="line">        &quot;-//Hibernate/Hibernate Configuration DTD//EN&quot;</span><br><span class="line">        &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;</span><br><span class="line">&lt;hibernate-configuration&gt;</span><br><span class="line">    &lt;session-factory&gt;</span><br><span class="line">       &lt;!--连接数据库的基本参数--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:mysql://localhost:3306/hibernate_day01?useUnicode=true&amp;amp;characterEncoding=UTF8&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;com.mysql.jdbc.Driver&lt;/property&gt;</span><br><span class="line">         &lt;property name=&quot;hibernate.connection.username&quot;&gt;root&lt;/property&gt;</span><br><span class="line">         &lt;property name=&quot;hibernate.connection.password&quot;&gt;abc3770166&lt;/property&gt;</span><br><span class="line">        &lt;!--hibernate属性--&gt;</span><br><span class="line">        &lt;!-- DB schema will be updated if needed --&gt;</span><br><span class="line">        &lt;!--根据配置生成sql语句--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQL5Dialect&lt;/property&gt;</span><br><span class="line">        &lt;!--在控制台显示sql语句--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;</span><br><span class="line">        &lt;!--格式化sql语句--&gt;</span><br><span class="line">        &lt;property name=&quot;hibernate.format_sql&quot;&gt;true&lt;/property&gt;</span><br><span class="line">        &lt;!--hbm2ddl属性说明--&gt;</span><br><span class="line">        &lt;!--hbm2ddl.auto的取值--&gt;</span><br><span class="line">        &lt;!--none 不自动生成表--&gt;</span><br><span class="line">        &lt;!--create 每次都会创建一个新的表--&gt;</span><br><span class="line">        &lt;!--create-drop每次都会创建一新的表，然后程序结束后删除这个表--&gt;</span><br><span class="line">        &lt;!--update 如果数据库中有这个表，则使用，没有，则创建一个表--&gt;</span><br><span class="line">        &lt;!--validate 只会使用原有的表，可以用来检测映射关系--&gt;</span><br><span class="line">        &lt;property name=&quot;hbm2ddl.auto&quot;&gt;update&lt;/property&gt;</span><br><span class="line">        &lt;!--加载映射关系--&gt;</span><br><span class="line">        &lt;mapping resource=&quot;cn/lcx/domain/Customer.hbm.xml&quot;&gt;&lt;/mapping&gt;</span><br><span class="line">    &lt;/session-factory&gt;</span><br><span class="line">&lt;/hibernate-configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在src下创建一个名称为hibernate.cfg.xml的文件，这里我就不用创建啦，因为智能的intellij ide已经帮我创建好啦，eclipse下要手动创建的，所以强烈安利使用 intellij ide，可以节省不少时间呢！</p>
+<p>上面这个配置文件设置了数据库的相关属性和其他一些常用的数据，通过mapping的resource属性将对象的关系加入到了hibernate的配置文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:mysql://localhost:3306/hibernate_day01?useUnicode=true&amp;amp;characterEncoding=UTF8&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>这里我在数据库名称 hibernate_day01后面加入了 ?useUnicode=true&amp;characterEncoding=UTF8  这个是编码格式，实测如果不加的话在数据库中出现中文会识别不了，hhibernate_day01为数据库的名称，这个数据库要提前建好哦，表就不用了。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/study1/3.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>ps：mysql数据库中有个坑爹的地方，字符集有utf8和utf8mb4，记住！！！永远不要在MySQL中使用utf8，要用utf8mb4，至于为什么，各位可以网上进一步了解，我是吃了大亏！！！！！</p>
+<h3 id="编写测试代码"><a href="#编写测试代码" class="headerlink" title="编写测试代码"></a>编写测试代码</h3><p>好了，配置文件都搞完了，我们现在要开始测试一下我们弄的成果。先上代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public class HibernateDemo1 &#123;</span><br><span class="line"></span><br><span class="line">    public static void demo01 ()</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">            //加载配置文件</span><br><span class="line">            Configuration cfg = new Configuration().configure();</span><br><span class="line">            //创建一个SeeeionFactory</span><br><span class="line">            SessionFactory sessionFactory =cfg.buildSessionFactory();</span><br><span class="line">            //创建session对象，类似于jdbc的Connection</span><br><span class="line">            Session session = sessionFactory.openSession();</span><br><span class="line">            //开启事务</span><br><span class="line">            Transaction tx = session.beginTransaction();</span><br><span class="line">            //执行相关操作</span><br><span class="line">            Customer customer = new Customer();</span><br><span class="line">            customer.setCust_name(&quot;小溪&quot;);</span><br><span class="line">            customer.setCust_source(&quot;网络推广&quot;);</span><br><span class="line">            session.save(customer);</span><br><span class="line"></span><br><span class="line">            //提交事务</span><br><span class="line">            tx.commit();</span><br><span class="line">            //释放资源</span><br><span class="line">            session.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(final String[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        demo01();</span><br><span class="line">        System.out.println(&quot;success&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过代码我们可以分析：</p>
+<p>Configuration主要是用于加载、启动映射文件，反正就是和映射文件有关啦，通过 Configuration cfg = new Configuration().configure(); 来创建实例，configure()这个方法是使用默认的hibernate.cfg.xml配置文件，如果不是默认的文件，就要指定文件的位置，方法是configure(“路径/配置文件.xml”)，不过我觉得一般很少用到这个方法</p>
+<p>SessionFactory 工厂对象，这个接口可以看得出来是初始化和建立 session对象，session在hibernate中起到一个缓冲作用，hibernate将自动生成的东东放到这个缓冲区中，就是缓存嘛~它的同一个实例可以提供多个线程共享，所以只需要建立一个就行了，节约资源~~~</p>
+<p>Session就是类与数据库交互的一个对象啦，crud操作就是用它来完成，创建完SessionFactory实例以后就可以获取session实例了，这里获取session实例有两种方式，一种是openSession（）方法，一种是getCurrentSession（）方法，</p>
+<p>第一种方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Session session = sessionFactory.openSession();</span><br></pre></td></tr></table></figure></p>
+<p>第二种方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Session session = sessionFactory.getCurrentSession();</span><br></pre></td></tr></table></figure></p>
+<p>这两种方法，简单来说，就是使用第一种的时候要在最后手动使用close方法关闭，而第二种不用，他会自动关闭。</p>
+<p>方法总结：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/study1/4.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>Transaction 接口主要用于管理事务，它由Session对象开启，在Transaction接口中，提供了常用方法，比如commit ()方法，它用于提交session实例，这个很重要，执行完数据操作以后，要用这个方法来进行提交，才能真正的将内容同步到数据库中，roolback()是回滚操作，在出现异常错误时，要用此方法回滚，这里我没有用到这个方法。</p>
+<p>Customer类就是获取对象啦，对对象中的属性进行操作从而实现对数据库中的操作，然后用session.save（）方法进行保存</p>
+<p>好了我们运行来看一下：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/study1/5.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/study1/6.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>运行成功，可以看到数据已经添加到数据库的表中。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是我第一天学习Hibernate的心得，第一天学习嘛，肯定还有很多地方的理解的不行，再接下来的学习中慢慢努力咯~</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-04-26T12:31:03.762Z" itemprop="dateUpdated">2019-04-26 20:31:03</time>
+</span><br>
+
+
+        
+        <br>原始链接：<a href="/2019/04/26/study1/" target="_blank" rel="external">https://nibiru123.github.io/2019/04/26/study1/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://nibiru123.github.io">
+            <img src="/img/avatar.jpg" alt="Nibiru">
+            Nibiru
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://nibiru123.github.io/2019/04/26/study1/&title=《Hibernate学习笔记（1）》 — 小溪的博客&pic=https://nibiru123.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://nibiru123.github.io/2019/04/26/study1/&title=《Hibernate学习笔记（1）》 — 小溪的博客&source=记录学习和生活" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nibiru123.github.io/2019/04/26/study1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hibernate学习笔记（1）》 — 小溪的博客&url=https://nibiru123.github.io/2019/04/26/study1/&via=https://nibiru123.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://nibiru123.github.io/2019/04/26/study1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/03/23/first/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">在Mac下使用hexo框架+GitHub搭建免费个人博客</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "kVqOakD1xrxY7x1LK74NuNGW-gzGzoHsz",
+            appKey: "WT0PB9mbrqIWprJcHGzgaz07",
+            avatar: "mm",
+            placeholder: "说点什么吧！（别忘了你的昵称哦~）",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Nibiru &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://nibiru123.github.io/2019/04/26/study1/&title=《Hibernate学习笔记（1）》 — 小溪的博客&pic=https://nibiru123.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://nibiru123.github.io/2019/04/26/study1/&title=《Hibernate学习笔记（1）》 — 小溪的博客&source=记录学习和生活" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nibiru123.github.io/2019/04/26/study1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hibernate学习笔记（1）》 — 小溪的博客&url=https://nibiru123.github.io/2019/04/26/study1/&via=https://nibiru123.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://nibiru123.github.io/2019/04/26/study1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://nibiru123.github.io/2019/04/26/study1/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
