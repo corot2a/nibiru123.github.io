@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/12.png">
 <meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/13.png">
 <meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/14.png">
-<meta property="og:updated_time" content="2019-04-27T09:55:34.106Z">
+<meta property="og:updated_time" content="2019-04-27T09:58:19.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hibernate学习笔记（2）">
 <meta name="twitter:description" content="前言坚持就是胜利，今天来写一下Hibernate中实体类的编写原则，主键生成策略，增删改查的一些操作还有Hibernate缓存，还有一些乱七八糟的东西 实体类编写原则1.实体类里面的属性必须为私有的 2.私有属性要使用public公开的set和get方法 3.实体属性建议使用基本属性类型对应的包装类 包装类： 两个特殊的：int-Integer   char-Character其他的都是首字母大写">
@@ -215,13 +215,13 @@
                 </div>
                 <div class="image-caption"></div>
             </figure> 
-<figure class="image-bubble">
+<p><br><br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2019/04/27/study02/2.png" alt title>
                 </div>
                 <div class="image-caption"></div>
-            </figure>
+            </figure></p>
 <p>native：为id自动生成策略，生成的是数字id，在实体类id的属性必须为int类型<br><br>uuid：生成的为16进制的uuid主键，添加到数据库中不需要设置id的值，在实体类中id的属性必须为字符串string类型</p>
 <p>PS：我在测试uuid的时候遇到输入中文就报错的情况，原因是在数据库的表中设置的编码格式不正确，所以如果你其他没有错误，但是就是运行不了，那一定要检查一下你表中字段的编码格式，设置成utf8mb4基本就解决了</p>
 <h2 id="对实体类的操作"><a href="#对实体类的操作" class="headerlink" title="对实体类的操作"></a>对实体类的操作</h2><h3 id="添加操作"><a href="#添加操作" class="headerlink" title="添加操作"></a>添加操作</h3><p>调用session里面的sava方法来实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Customer customer=new Customer();</span><br><span class="line">customer.setCust_name(&quot;小溪&quot;);</span><br><span class="line">customer.setCust_source(&quot;网络&quot;);</span><br><span class="line">customer.setCust_level(&quot;vip&quot;);</span><br><span class="line">session.save(customer);</span><br></pre></td></tr></table></figure></p>
@@ -340,7 +340,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-04-27T09:55:34.106Z" itemprop="dateUpdated">2019-04-27 17:55:34</time>
+    最后更新时间：<time datetime="2019-04-27T09:58:19.809Z" itemprop="dateUpdated">2019-04-27 17:58:19</time>
 </span><br>
 
 
