@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Hibernate学习笔记（2） | xi&#39;s Blog | 啥都不懂，啥都不会~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="前言坚持就是胜利，今天来写一下Hibernate中实体类的编写原则，主键生成策略，增删改查的一些操作还有Hibernate缓存，还有一些乱七八糟的东西 实体类编写原则1.实体类里面的属性必须为私有的 2.私有属性要使用public公开的set和get方法 3.实体属性建议使用基本属性类型对应的包装类 包装类： 两个特殊的：int-Integer   char-Character其他的都是首字母大写">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate学习笔记（2）">
+<meta property="og:url" content="https://nibiru123.github.io/2019/04/27/study02/index.html">
+<meta property="og:site_name" content="xi&#39;s Blog">
+<meta property="og:description" content="前言坚持就是胜利，今天来写一下Hibernate中实体类的编写原则，主键生成策略，增删改查的一些操作还有Hibernate缓存，还有一些乱七八糟的东西 实体类编写原则1.实体类里面的属性必须为私有的 2.私有属性要使用public公开的set和get方法 3.实体属性建议使用基本属性类型对应的包装类 包装类： 两个特殊的：int-Integer   char-Character其他的都是首字母大写">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/3.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/2.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/4.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/5.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/6.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/7.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/8.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/9.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/10.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/11.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/12.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/13.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/04/27/study02/14.png">
+<meta property="og:updated_time" content="2019-04-27T09:46:23.668Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hibernate学习笔记（2）">
+<meta name="twitter:description" content="前言坚持就是胜利，今天来写一下Hibernate中实体类的编写原则，主键生成策略，增删改查的一些操作还有Hibernate缓存，还有一些乱七八糟的东西 实体类编写原则1.实体类里面的属性必须为私有的 2.私有属性要使用public公开的set和get方法 3.实体属性建议使用基本属性类型对应的包装类 包装类： 两个特殊的：int-Integer   char-Character其他的都是首字母大写">
+<meta name="twitter:image" content="https://nibiru123.github.io/2019/04/27/study02/3.png">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Nibiru</h5>
+          <a href="mailto:274708301@qq.com" title="274708301@qq.com" class="mail">274708301@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                文章列表
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/u/6709820021" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://user.qzone.qq.com/274708301">
+                <i class="icon icon-lg icon-link"></i>
+                QQ空间
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Hibernate学习笔记（2）</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Hibernate学习笔记（2）</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-27T07:28:20.000Z" itemprop="datePublished" class="page-time">
+  2019-04-27
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实体类编写原则"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">实体类编写原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#主键生成策略"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">主键生成策略</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对实体类的操作"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">对实体类的操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添加操作"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">添加操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查询操作"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">查询操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修改操作"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">修改操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除操作"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">删除操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate的持久化对象的三种状态"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Hibernate的持久化对象的三种状态</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#瞬时态"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">瞬时态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#持久态"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">持久态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#脱管态"><span class="post-toc-number">1.4.3.</span> <span class="post-toc-text">脱管态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#对saveorUpdate方法的理解"><span class="post-toc-number">1.4.4.</span> <span class="post-toc-text">对saveorUpdate方法的理解</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate的缓存"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Hibernate的缓存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一级缓存"><span class="post-toc-number">1.5.1.</span> <span class="post-toc-text">一级缓存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一级缓存的验证"><span class="post-toc-number">1.5.2.</span> <span class="post-toc-text">一级缓存的验证</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一级缓存的执行过程"><span class="post-toc-number">1.5.3.</span> <span class="post-toc-text">一级缓存的执行过程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一级缓存的作用"><span class="post-toc-number">1.5.4.</span> <span class="post-toc-text">一级缓存的作用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#执行过程"><span class="post-toc-number">1.5.4.1.</span> <span class="post-toc-text">执行过程</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate事务"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">Hibernate事务</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Hibernate事务代码的规范写法"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">Hibernate事务代码的规范写法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hibernate其他API"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">Hibernate其他API</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Query"><span class="post-toc-number">1.7.1.</span> <span class="post-toc-text">Query</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Criteria"><span class="post-toc-number">1.7.2.</span> <span class="post-toc-text">Criteria</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SQLQuery"><span class="post-toc-number">1.7.3.</span> <span class="post-toc-text">SQLQuery</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">2.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-study02" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Hibernate学习笔记（2）</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-27 15:28:20" datetime="2019-04-27T07:28:20.000Z" itemprop="datePublished">2019-04-27</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>坚持就是胜利，今天来写一下Hibernate中实体类的编写原则，主键生成策略，增删改查的一些操作还有Hibernate缓存，还有一些乱七八糟的东西</p>
+<h2 id="实体类编写原则"><a href="#实体类编写原则" class="headerlink" title="实体类编写原则"></a>实体类编写原则</h2><p>1.实体类里面的属性必须为私有的</p>
+<p>2.私有属性要使用public公开的set和get方法</p>
+<p>3.实体属性建议使用基本属性类型对应的包装类</p>
+<p>包装类： 两个特殊的：int-Integer   char-Character<br>其他的都是首字母大写，如：double-Double</p>
+<p>至于为什么使用包装类，包装类是为了避免产生歧义，double=0 和 Double=null 的意义是不一样的，比如你的考试成绩，int =0为表示零分，你没去考试不也是零分吗？但这里我们用 Integer=null来表示。这样就不会产生歧义</p>
+<h2 id="主键生成策略"><a href="#主键生成策略" class="headerlink" title="主键生成策略"></a>主键生成策略</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/3.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>主键生成策略常用的有 native和uuid。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;id name=&quot;cust_id&quot; column=&quot;cust_id&quot;&gt;</span><br><span class="line">           &lt;generator class=&quot;native&quot;/&gt;</span><br><span class="line">           &lt;generator class=&quot;uuid&quot;/&gt;    </span><br><span class="line">       &lt;/id&gt;</span><br></pre></td></tr></table></figure></p>
+<p>二者有什么区别呢？先来看图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/2.png" alt="](study02/1.png) ![" title>
+                </div>
+                <div class="image-caption">](study02/1.png) ![</div>
+            </figure>
+<p>native：为id自动生成策略，生成的是数字id，在实体类id的属性必须为int类型<br><br>uuid：生成的为16进制的uuid主键，添加到数据库中不需要设置id的值，在实体类中id的属性必须为字符串string类型</p>
+<p>PS：我在测试uuid的时候遇到输入中文就报错的情况，原因是在数据库的表中设置的编码格式不正确，所以如果你其他没有错误，但是就是运行不了，那一定要检查一下你表中字段的编码格式，设置成utf8mb4基本就解决了</p>
+<h2 id="对实体类的操作"><a href="#对实体类的操作" class="headerlink" title="对实体类的操作"></a>对实体类的操作</h2><h3 id="添加操作"><a href="#添加操作" class="headerlink" title="添加操作"></a>添加操作</h3><p>调用session里面的sava方法来实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Customer customer=new Customer();</span><br><span class="line">customer.setCust_name(&quot;小溪&quot;);</span><br><span class="line">customer.setCust_source(&quot;网络&quot;);</span><br><span class="line">customer.setCust_level(&quot;vip&quot;);</span><br><span class="line">session.save(customer);</span><br></pre></td></tr></table></figure></p>
+<p>我们来看控制台输出的语句：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/4.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>save方法实现了sql中insert语句</p>
+<h3 id="查询操作"><a href="#查询操作" class="headerlink" title="查询操作"></a>查询操作</h3><p>调用session里面的get方法来实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Customer customer = session.get(Customer.class,1);</span><br></pre></td></tr></table></figure>
+<p>ger这里需要两个参数，第一个：实体类.class 第二个：id的值<br><br>控制台输出<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/5.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>get方法实现了select查询语句</p>
+<p>ps：这里我又遇到了一个坑，之前实体类定义id的时候使用了Long类型，这就导致在查询id的时候出现格式不匹配的错误，最后我把Long改成了int就解决了。</p>
+<h3 id="修改操作"><a href="#修改操作" class="headerlink" title="修改操作"></a>修改操作</h3><p>先查询再修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Customer customer = session.get(Customer.class,1);</span><br><span class="line">        customer.setCust_name(&quot;大溪&quot;);</span><br><span class="line">        session.update(customer);</span><br></pre></td></tr></table></figure>
+<p><br><br>我们来看控制台输出语句：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/6.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>在这里，通过session.get方法来获取到了id的值，然后调用实体类中的set方法来对值进行修改，最后调用session的update的方法来实现对数据库表中内容的修改<br><br><br>执行过程：到Customer对象里面找到cust_id的值，根据id的值进行修改</p>
+<h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><p>先查询再删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Customer customer = session.get(Customer.class,1);</span><br><span class="line">session.delete(customer);</span><br></pre></td></tr></table></figure>
+<p>这里执行方法和上面的修改操作方法类似<br>我们看控制台输出</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/7.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="Hibernate的持久化对象的三种状态"><a href="#Hibernate的持久化对象的三种状态" class="headerlink" title="Hibernate的持久化对象的三种状态"></a>Hibernate的持久化对象的三种状态</h2><h3 id="瞬时态"><a href="#瞬时态" class="headerlink" title="瞬时态"></a>瞬时态</h3><p>瞬时态由new命令创建，开辟内存空间的对象，没有持久化表示OID（可以理解为主键），未与Session对象关联，可以表现为以下形式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Customer customer=new Customer();</span><br><span class="line">        customer.setCust_name(&quot;小溪&quot;);</span><br><span class="line">        customer.setCust_source(&quot;网络&quot;);</span><br><span class="line">        customer.setCust_level(&quot;vip&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="持久态"><a href="#持久态" class="headerlink" title="持久态"></a>持久态</h3><p>持久态有了OID，加入到了Session的缓存中，并且关联的session没有关闭，在数据库中有对应的记录，持久态对象是在事务没有提交之前变成持久态的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Customer customer = session.get(Customer.class,1);</span><br></pre></td></tr></table></figure></p>
+<h3 id="脱管态"><a href="#脱管态" class="headerlink" title="脱管态"></a>脱管态</h3><p>同样存在OID，可以理解为离线了，当持久态与session的关联被关闭了就成为了脱管态，但是仍然与数据库的数据存在关联，只是失去了与当前Session的关联</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Customer customer=new Customer();</span><br><span class="line">         customer.setCust_id(&quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="对saveorUpdate方法的理解"><a href="#对saveorUpdate方法的理解" class="headerlink" title="对saveorUpdate方法的理解"></a>对saveorUpdate方法的理解</h3><p>在session的众多方法中，存在一个saveorUpdate方法，从字面意思来看，这是两个方法，添加或者修改，那么什么时候是修改呢，什么时候是添加呢？这和上面三种状态有啥关系呢？<br><br>瞬时态下调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Customer customer=new Customer();</span><br><span class="line">        customer.setCust_name(&quot;小溪&quot;);</span><br><span class="line">        customer.setCust_source(&quot;网络&quot;);</span><br><span class="line">        customer.setCust_level(&quot;vip&quot;);</span><br><span class="line">        session.saveOrUpdate(customer);</span><br></pre></td></tr></table></figure></p>
+<p>控制台输出<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/8.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>很明显，这里调用了添加操作，我们可以总结，实体类对象的状态是瞬时态时，做添加<br><br>持久态下调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Customer customer = session.get(Customer.class,2);</span><br><span class="line">        customer.setCust_name(&quot;大溪&quot;);</span><br><span class="line">        session.saveOrUpdate(customer);</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/9.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这里调用了修改操作。so，实体类对象的状态是持久态时，做修改<br><br>脱管态下调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ustomer customer=new Customer();</span><br><span class="line">        customer.setCust_id(3);</span><br><span class="line">        customer.setCust_name(&quot;小小溪&quot;);</span><br><span class="line">        customer.setCust_source(&quot;网络&quot;);</span><br><span class="line">        customer.setCust_level(&quot;vip&quot;);</span><br><span class="line">        session.saveOrUpdate(customer);</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/10.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p><br><br>我们可以看到，这里调用了修改方法，所以实体类对象是托管态时，做修改</p>
+<h2 id="Hibernate的缓存"><a href="#Hibernate的缓存" class="headerlink" title="Hibernate的缓存"></a>Hibernate的缓存</h2><p>什么是缓存呢？<br>缓存就是把数据放到内存中，不用流的方式，直接在内存中读取数据，把数据放到了内存中，提高了读取效率。<br><br><br>Hibernate缓存<br>Hibernate有一级二级缓存，二级缓存目前已经被redis来代替了，这里不再讨论，Hibernate的缓存减少了访问数据库的次数</p>
+<h3 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h3><p>一级缓存默认是打开的，它的使用范围实际上是session的使用范围，从session的创建到session关闭，一级缓存中存储的是持久态数据</p>
+<h3 id="一级缓存的验证"><a href="#一级缓存的验证" class="headerlink" title="一级缓存的验证"></a>一级缓存的验证</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Customer customer1 = session.get(Customer.class,3);</span><br><span class="line">System.out.println(customer1);</span><br><span class="line">Customer customer2 = session.get(Customer.class,3);</span><br><span class="line">System.out.println(customer2);</span><br></pre></td></tr></table></figure>
+<p>在这里我们创建两个对象，根据id来查询，看是否会返回sql语句，现在我们来看控制台输出<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/11.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>可以看到，第一步执行完以后，发送sql语句查询，第二步则没有执行sql语句，直接访问了一级缓存的内容</p>
+<h3 id="一级缓存的执行过程"><a href="#一级缓存的执行过程" class="headerlink" title="一级缓存的执行过程"></a>一级缓存的执行过程</h3><p>首先查询一级缓存，发现一级缓存没有数据，才会去查询数据库的内容，随后返回一个持久化对象（customer1）<br><br>其次把customer1放到一级缓存中<br><br>customer2开始运行，和cus1一样，先查询一级缓存，发现一级缓存有数据，则查询一级缓存中的数据，不再执行sql语句了</p>
+<h3 id="一级缓存的作用"><a href="#一级缓存的作用" class="headerlink" title="一级缓存的作用"></a>一级缓存的作用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Customer customer1 = session.get(Customer.class,3);</span><br><span class="line">        System.out.println(customer1);</span><br><span class="line">        customer1.setCust_name(&quot;大小溪&quot;);</span><br><span class="line">        //提交事务</span><br><span class="line">        tx.commit();</span><br><span class="line">        //释放资源</span><br><span class="line">        session.close();</span><br></pre></td></tr></table></figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/12.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>我们可以看到，这里实现了更新数据库的操作。</p>
+<h4 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h4><p>首先执行session的get操作，返回customer的持久态对象，放到了一级缓存中，同时在一级缓存中有个快照区，快照区保存的内容与一级缓存中的内容一致，调用set方法来修改值，也就是customer持久态对象在一级缓存中的值，修改一级缓存但不会修改快照区的内容，最后提交事务的时候，commit来比较，一级缓存中的值和快照中的值是否相同，如果相同不进行修改，如果不同，就修改咯，然后把一级缓存中的值放到数据库中。</p>
+<h2 id="Hibernate事务"><a href="#Hibernate事务" class="headerlink" title="Hibernate事务"></a>Hibernate事务</h2><p>什么是事务？<br>简单理解为就是同一组操作，要么一起成功，要么一起失败，只要其中一项操作出现了错误，就不能成功，这就和代码运行一样，其中一行代码出现了错误，其他后面就编译不通过，无法运行。<br><br>事务的四个特性（ACID）<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/13.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>在昨天的笔记中，我有提到一个回滚方法，rollback，这个操作就是当事务出现异常时，对事务进行回滚撤销。</p>
+<h3 id="Hibernate事务代码的规范写法"><a href="#Hibernate事务代码的规范写法" class="headerlink" title="Hibernate事务代码的规范写法"></a>Hibernate事务代码的规范写法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">    开启事务</span><br><span class="line">    提交事务</span><br><span class="line">&#125;catch&#123;</span><br><span class="line">    回滚事务</span><br><span class="line">&#125;finally&#123;</span><br><span class="line">    关闭</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码事例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static void demo01() &#123;</span><br><span class="line">    Configuration cfg = new Configuration().configure();</span><br><span class="line">    SessionFactory sessionFactory = null;</span><br><span class="line">    Session session = null;</span><br><span class="line">    Transaction tx = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        sessionFactory = cfg.buildSessionFactory();</span><br><span class="line">        session = sessionFactory.openSession();</span><br><span class="line">        tx = session.beginTransaction();</span><br><span class="line">        Customer customer = new Customer();</span><br><span class="line">        customer.setCust_name(&quot;小溪&quot;);</span><br><span class="line">        customer.setCust_source(&quot;网络&quot;);</span><br><span class="line">        session.save(customer);</span><br><span class="line">        tx.commit();</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        tx.rollback();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        session.close();</span><br><span class="line">        sessionFactory.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Hibernate其他API"><a href="#Hibernate其他API" class="headerlink" title="Hibernate其他API"></a>Hibernate其他API</h2><h3 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h3><p>使用Query不需要编学sql语句，需要写hql语句，sql的语句是操作数据库的表和字段，hql语句是操作实体类和属性，查询所有的hql语句为 from+实体类名称，代码演示如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//创建Query对象，方法里面写hql语句</span><br><span class="line">        Query query=session.createQuery(&quot;from Customer &quot;);</span><br><span class="line">        //调用query里的方法来得到结果，然后用for循环输出</span><br><span class="line">        List&lt;Customer&gt; list=query.list();</span><br><span class="line">        for (Customer customer:list)</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(customer);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Criteria"><a href="#Criteria" class="headerlink" title="Criteria"></a>Criteria</h3><p>使用这个对象查询操作，不需要写语句，直接调用方法实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Criteria criteria=session.createCriteria(Customer.class);</span><br><span class="line">        List&lt;Customer&gt; list=criteria.list();</span><br><span class="line">        for (Customer customer:list)</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(customer);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="SQLQuery"><a href="#SQLQuery" class="headerlink" title="SQLQuery"></a>SQLQuery</h3><p>调用底层的sql实现，需要写sql语句,不建议使用，太麻烦了orz。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/27/study02/14.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第二次的学习完成，最大的感受就是有了框架来操作数据库是真的容易！继续努力！！！</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-04-27T09:46:23.668Z" itemprop="dateUpdated">2019-04-27 17:46:23</time>
+</span><br>
+
+
+        
+        <br>原始链接：<a href="/2019/04/27/study02/" target="_blank" rel="external">https://nibiru123.github.io/2019/04/27/study02/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://nibiru123.github.io">
+            <img src="/img/avatar.jpg" alt="Nibiru">
+            Nibiru
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://nibiru123.github.io/2019/04/27/study02/&title=《Hibernate学习笔记（2）》 — xi's Blog&pic=https://nibiru123.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://nibiru123.github.io/2019/04/27/study02/&title=《Hibernate学习笔记（2）》 — xi's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nibiru123.github.io/2019/04/27/study02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hibernate学习笔记（2）》 — xi's Blog&url=https://nibiru123.github.io/2019/04/27/study02/&via=https://nibiru123.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://nibiru123.github.io/2019/04/27/study02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/26/study1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Hibernate学习笔记（1）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "kVqOakD1xrxY7x1LK74NuNGW-gzGzoHsz",
+            appKey: "WT0PB9mbrqIWprJcHGzgaz07",
+            avatar: "mm",
+            placeholder: "说点什么吧！（别忘了你的昵称哦~）",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Nibiru &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://nibiru123.github.io/2019/04/27/study02/&title=《Hibernate学习笔记（2）》 — xi's Blog&pic=https://nibiru123.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://nibiru123.github.io/2019/04/27/study02/&title=《Hibernate学习笔记（2）》 — xi's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nibiru123.github.io/2019/04/27/study02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hibernate学习笔记（2）》 — xi's Blog&url=https://nibiru123.github.io/2019/04/27/study02/&via=https://nibiru123.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://nibiru123.github.io/2019/04/27/study02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://nibiru123.github.io/2019/04/27/study02/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
