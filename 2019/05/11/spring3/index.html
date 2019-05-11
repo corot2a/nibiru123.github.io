@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Spring学习笔记（3） | xi&#39;s Blog | 啥都不懂，啥都不会~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="学习笔记,Java框架,SSH">
+    <meta name="description" content="前言今天主要来说一下基于aspectj注解的aop操作，spring的jdbcTemplate操作，c3p0连接池还有事务管理，spring的学习已经接近尾声了 基于aspectj的注解aop操作在这里我们还是使用book类中的方法来增强mybook类 第一步，在配置文件中先创建对象123&amp;lt;!--创建对象--&amp;gt;    &amp;lt;bean id=&amp;quot;book&amp;quot; class">
+<meta name="keywords" content="学习笔记,Java框架,SSH">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring学习笔记（3）">
+<meta property="og:url" content="https://nibiru123.github.io/2019/05/11/spring3/index.html">
+<meta property="og:site_name" content="xi&#39;s Blog">
+<meta property="og:description" content="前言今天主要来说一下基于aspectj注解的aop操作，spring的jdbcTemplate操作，c3p0连接池还有事务管理，spring的学习已经接近尾声了 基于aspectj的注解aop操作在这里我们还是使用book类中的方法来增强mybook类 第一步，在配置文件中先创建对象123&amp;lt;!--创建对象--&amp;gt;    &amp;lt;bean id=&amp;quot;book&amp;quot; class">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://nibiru123.github.io/2019/05/11/spring3/1.png">
+<meta property="og:image" content="https://nibiru123.github.io/2019/05/11/spring3/2.png">
+<meta property="og:updated_time" content="2019-05-11T10:00:41.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring学习笔记（3）">
+<meta name="twitter:description" content="前言今天主要来说一下基于aspectj注解的aop操作，spring的jdbcTemplate操作，c3p0连接池还有事务管理，spring的学习已经接近尾声了 基于aspectj的注解aop操作在这里我们还是使用book类中的方法来增强mybook类 第一步，在配置文件中先创建对象123&amp;lt;!--创建对象--&amp;gt;    &amp;lt;bean id=&amp;quot;book&amp;quot; class">
+<meta name="twitter:image" content="https://nibiru123.github.io/2019/05/11/spring3/1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="xi&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">nibiru</h5>
+          <a href="mailto:274708301@qq.com" title="274708301@qq.com" class="mail">274708301@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                文章列表
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-link"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/u/6709820021" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Spring学习笔记（3）</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Spring学习笔记（3）</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-05-11T12:30:20.000Z" itemprop="datePublished" class="page-time">
+  2019-05-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Spring/">Spring</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基于aspectj的注解aop操作"><span class="post-toc-number">2.</span> <span class="post-toc-text">基于aspectj的注解aop操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第一步，在配置文件中先创建对象"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">第一步，在配置文件中先创建对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二步，在spring的核心配置文件中，开启aop操作"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">第二步，在spring的核心配置文件中，开启aop操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第三步，在所要增强的类上面使用注解来完成AOP操作"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">第三步，在所要增强的类上面使用注解来完成AOP操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Spring的jdbcTemplate操作"><span class="post-toc-number">3.</span> <span class="post-toc-text">Spring的jdbcTemplate操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第一步，设置数据库信息"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">第一步，设置数据库信息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二步，创建jdbcTemplate对象，设置数据源"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">第二步，创建jdbcTemplate对象，设置数据源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第三步，调用方法，来对数据库进行操作，以下为增加，修改，删除完整代码"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">第三步，调用方法，来对数据库进行操作，以下为增加，修改，删除完整代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#查询方法"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">查询方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查询表中有多少条记录"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">查询表中有多少条记录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查询返回对象"><span class="post-toc-number">3.4.2.</span> <span class="post-toc-text">查询返回对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查询返回list集合"><span class="post-toc-number">3.4.3.</span> <span class="post-toc-text">查询返回list集合</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Spring配置c3p0连接池和dao使用jdbcTemplate"><span class="post-toc-number">4.</span> <span class="post-toc-text">Spring配置c3p0连接池和dao使用jdbcTemplate</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是连接池？"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">什么是连接池？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第一步，在配置文件中配置连接池"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">第一步，在配置文件中配置连接池</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dao使用jdbcTemplate"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">dao使用jdbcTemplate</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建并配置service、dao、jdbcTemplate，在service注入dao，dao注入jdbcTemplate"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">创建并配置service、dao、jdbcTemplate，在service注入dao，dao注入jdbcTemplate</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Service类"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Service类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dao类"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">dao类</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Spring的事务管理"><span class="post-toc-number">5.</span> <span class="post-toc-text">Spring的事务管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是事务？"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">什么是事务？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#事务特性"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">事务特性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#如果不考虑隔离性引发安全性问题"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">如果不考虑隔离性引发安全性问题:</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Spring事务管理api"><span class="post-toc-number">6.</span> <span class="post-toc-text">Spring事务管理api</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#事务管理两种方式"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">事务管理两种方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编程式事务管理（不用）"><span class="post-toc-number">6.1.1.</span> <span class="post-toc-text">编程式事务管理（不用）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#声明式事务管理"><span class="post-toc-number">6.1.2.</span> <span class="post-toc-text">声明式事务管理</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#以转账为例来测试Spring的事务管理"><span class="post-toc-number">7.</span> <span class="post-toc-text">以转账为例来测试Spring的事务管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Service类-1"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">Service类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Dao类"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">Dao类</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#异常的解决"><span class="post-toc-number">8.</span> <span class="post-toc-text">异常的解决</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#xml配置"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">xml配置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第一步，配置事务管理器"><span class="post-toc-number">8.1.1.</span> <span class="post-toc-text">第一步，配置事务管理器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第二步，配置事务增强"><span class="post-toc-number">8.1.2.</span> <span class="post-toc-text">第二步，配置事务增强</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第三步，配置切面"><span class="post-toc-number">8.1.3.</span> <span class="post-toc-text">第三步，配置切面</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注解配置"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">注解配置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置文件配置如下："><span class="post-toc-number">8.2.1.</span> <span class="post-toc-text">配置文件配置如下：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在要使用的事务的方法所在类上添加注解"><span class="post-toc-number">8.2.2.</span> <span class="post-toc-text">在要使用的事务的方法所在类上添加注解</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-spring3" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Spring学习笔记（3）</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-05-11 20:30:20" datetime="2019-05-11T12:30:20.000Z" itemprop="datePublished">2019-05-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Spring/">Spring</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>今天主要来说一下基于aspectj注解的aop操作，spring的jdbcTemplate操作，c3p0连接池还有事务管理，spring的学习已经接近尾声了</p>
+<h1 id="基于aspectj的注解aop操作"><a href="#基于aspectj的注解aop操作" class="headerlink" title="基于aspectj的注解aop操作"></a>基于aspectj的注解aop操作</h1><p>在这里我们还是使用book类中的方法来增强mybook类</p>
+<h2 id="第一步，在配置文件中先创建对象"><a href="#第一步，在配置文件中先创建对象" class="headerlink" title="第一步，在配置文件中先创建对象"></a>第一步，在配置文件中先创建对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--创建对象--&gt;</span><br><span class="line">    &lt;bean id=&quot;book&quot; class=&quot;cn.lcx.aop.Book&quot;&gt;&lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;mybook&quot; class=&quot;cn.lcx.aop.MyBook&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="第二步，在spring的核心配置文件中，开启aop操作"><a href="#第二步，在spring的核心配置文件中，开启aop操作" class="headerlink" title="第二步，在spring的核心配置文件中，开启aop操作"></a>第二步，在spring的核心配置文件中，开启aop操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--开启aop操作--&gt;</span><br><span class="line">    &lt;aop:aspectj-autoproxy&gt;&lt;/aop:aspectj-autoproxy&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="第三步，在所要增强的类上面使用注解来完成AOP操作"><a href="#第三步，在所要增强的类上面使用注解来完成AOP操作" class="headerlink" title="第三步，在所要增强的类上面使用注解来完成AOP操作"></a>第三步，在所要增强的类上面使用注解来完成AOP操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">public class MyBook &#123;</span><br><span class="line">    //在方法上面使用注解完成增强配置</span><br><span class="line">    @Before(value = &quot;execution(* cn.lcx.aop.Book.*(..))&quot;)</span><br><span class="line">    public void before1()</span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(&quot;before....&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Spring的jdbcTemplate操作"><a href="#Spring的jdbcTemplate操作" class="headerlink" title="Spring的jdbcTemplate操作"></a>Spring的jdbcTemplate操作</h1><p>Spring的框架是一站式框架，在针对javaee的三层结构中，每一层都有解决的技术，在dao层，使用jdbcTemplate，它对jdbc进行了封装，对数据库进行crud操作。</p>
+<h2 id="第一步，设置数据库信息"><a href="#第一步，设置数据库信息" class="headerlink" title="第一步，设置数据库信息"></a>第一步，设置数据库信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">dataSource.setPassword(&quot;abc3770166&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="第二步，创建jdbcTemplate对象，设置数据源"><a href="#第二步，创建jdbcTemplate对象，设置数据源" class="headerlink" title="第二步，创建jdbcTemplate对象，设置数据源"></a>第二步，创建jdbcTemplate对象，设置数据源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br></pre></td></tr></table></figure>
+<h2 id="第三步，调用方法，来对数据库进行操作，以下为增加，修改，删除完整代码"><a href="#第三步，调用方法，来对数据库进行操作，以下为增加，修改，删除完整代码" class="headerlink" title="第三步，调用方法，来对数据库进行操作，以下为增加，修改，删除完整代码"></a>第三步，调用方法，来对数据库进行操作，以下为增加，修改，删除完整代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">package cn.lcx.jdbc;</span><br><span class="line"></span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.springframework.jdbc.core.JdbcTemplate;</span><br><span class="line">import org.springframework.jdbc.datasource.DriverManagerDataSource;</span><br><span class="line"></span><br><span class="line">public class JdbcDemo1 &#123;</span><br><span class="line"></span><br><span class="line">    //1.添加操作</span><br><span class="line">    @Test</span><br><span class="line">    public void add()</span><br><span class="line">    &#123;</span><br><span class="line">        //设置数据库信息</span><br><span class="line">        DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">        dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">        dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">        dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">        dataSource.setPassword(&quot;abc3770166&quot;);</span><br><span class="line">        //创建jdbcTemplate对象，设置数据源</span><br><span class="line">        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br><span class="line">        //调用方法</span><br><span class="line">        String sql = &quot;insert into user values(?,?)&quot;;</span><br><span class="line">        int rows=jdbcTemplate.update(sql,&quot;lucy&quot;,&quot;250&quot;);</span><br><span class="line">        System.out.println(rows);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    //2.修改操作</span><br><span class="line">    public void update()</span><br><span class="line">    &#123;</span><br><span class="line">        //设置数据库信息</span><br><span class="line">        DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">        dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">        dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">        dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">        dataSource.setPassword(&quot;abc3770166&quot;);</span><br><span class="line">        //创建jdbcTemplate对象，设置数据源</span><br><span class="line">        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br><span class="line">        //调用方法</span><br><span class="line">        String sql=&quot; update user set password=? where username=?&quot;;</span><br><span class="line">       int rows= jdbcTemplate.update(sql,&quot;1314&quot;,&quot;lucy&quot;);</span><br><span class="line">        System.out.println(rows);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    //3.删除操作</span><br><span class="line">    public void delete()</span><br><span class="line">    &#123;</span><br><span class="line">        //设置数据库信息</span><br><span class="line">        DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">        dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">        dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">        dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">        dataSource.setPassword(&quot;abc3770166&quot;);</span><br><span class="line">        //创建jdbcTemplate对象，设置数据源</span><br><span class="line">        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br><span class="line">        //调用方法</span><br><span class="line">        String sql=&quot;delete from user where username=?&quot;;</span><br><span class="line">        int rows= jdbcTemplate.update(sql,&quot;lucy&quot;);</span><br><span class="line">        System.out.println(rows);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="查询方法"><a href="#查询方法" class="headerlink" title="查询方法"></a>查询方法</h2><h3 id="查询表中有多少条记录"><a href="#查询表中有多少条记录" class="headerlink" title="查询表中有多少条记录"></a>查询表中有多少条记录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">   public void testCount()</span><br><span class="line">   &#123;</span><br><span class="line">       //设置数据库信息</span><br><span class="line">       DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">       dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">       dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">       dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">       dataSource.setPassword(&quot;abc3770166&quot;);</span><br><span class="line">       //创建jdbcTemplate对象，设置数据源</span><br><span class="line">       JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br><span class="line">       //调用方法得到记录数</span><br><span class="line">       String sql = &quot;select count(*) from user &quot;;</span><br><span class="line">       int count=jdbcTemplate.queryForObject(sql,Integer.class);</span><br><span class="line">       System.out.println(count);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这里不难理解，queryForObject方法需要两个参数</p>
+<ul>
+<li>第一个参数是sql语句</li>
+<li>第二个参数是返回类型的class<h3 id="查询返回对象"><a href="#查询返回对象" class="headerlink" title="查询返回对象"></a>查询返回对象</h3>我们需要创建一个实体类来保存返回来的数据<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/05/11/spring3/1.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+从这个方法我们可以看出，第二个参数是Rowmapper，是一个接口<br><br><br>实现这个接口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class MyRowMapper implements RowMapper&lt;User&gt;</span><br><span class="line">&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public User mapRow(ResultSet rs,int num) throws SQLException</span><br><span class="line">    &#123;</span><br><span class="line">        //从结果集里面把数据得到</span><br><span class="line">        String username=rs.getString(&quot;username&quot;);</span><br><span class="line">        String password=rs.getString(&quot;password&quot;);</span><br><span class="line">        //把数据封装到对象里面</span><br><span class="line"></span><br><span class="line">        User user=new User();</span><br><span class="line">        user.setUsername(username);</span><br><span class="line">        user.setPassword(password);</span><br><span class="line"></span><br><span class="line">        return user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//2.查询返回对象</span><br><span class="line">    @Test</span><br><span class="line">    public void testObject()</span><br><span class="line">    &#123;</span><br><span class="line">        //设置数据库信息</span><br><span class="line">        DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">        dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">        dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">        dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">        dataSource.setPassword(&quot;abc3770166&quot;);</span><br><span class="line">        //创建jdbcTemplate对象，设置数据源</span><br><span class="line">        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br><span class="line">        //调用方法得到记录数</span><br><span class="line">        String sql = &quot;select * from user where username=?&quot;;</span><br><span class="line">        //第二个参数是接口RowMapper,需要自己写类实现接口，自己做数据的封装</span><br><span class="line">        User user=jdbcTemplate.queryForObject(sql,new MyRowMapper(),&quot;lucy&quot;);</span><br><span class="line">        System.out.println(user);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询返回list集合"><a href="#查询返回list集合" class="headerlink" title="查询返回list集合"></a>查询返回list集合</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//3.返回list集合</span><br><span class="line">    @Test</span><br><span class="line">    public void testList()</span><br><span class="line">    &#123;</span><br><span class="line">        //设置数据库信息</span><br><span class="line">        DriverManagerDataSource dataSource= new DriverManagerDataSource();</span><br><span class="line">        dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">        dataSource.setUrl(&quot;jdbc:mysql://localhost:3306/Spring&quot;);</span><br><span class="line">        dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">        dataSource.setPassword(&quot;abc3770166&quot;);</span><br><span class="line">        //创建jdbcTemplate对象，设置数据源</span><br><span class="line">        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);</span><br><span class="line">        //调用方法</span><br><span class="line">        String sql =&quot;select * from user&quot;;</span><br><span class="line">        List&lt;User&gt;list  =jdbcTemplate.query(sql,new MyRowMapper());</span><br><span class="line">        System.out.println(list);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Spring配置c3p0连接池和dao使用jdbcTemplate"><a href="#Spring配置c3p0连接池和dao使用jdbcTemplate" class="headerlink" title="Spring配置c3p0连接池和dao使用jdbcTemplate"></a>Spring配置c3p0连接池和dao使用jdbcTemplate</h1><h2 id="什么是连接池？"><a href="#什么是连接池？" class="headerlink" title="什么是连接池？"></a>什么是连接池？</h2><p>连接池用于创建和管理数据库连接的缓冲池技术，缓冲池中的连接可以被任何需要他们的线程使用。当一个线程需要用JDBC对一个数据库操作时，将从池中请求一个连接。当这个连接使用完毕后，将返回到连接池中，等待为其他的线程服务。 连接池的主要优点有以下三个方面。<br><br>第一、减少连接创建时间。连接池中的连接是已准备好的、可重复使用的，获取后可以直接访问数据库，因此减少了连接创建的次数和时间。<br><br>第二、简化的编程模式。当使用连接池时，每一个单独的线程能够像创建一个自己的JDBC连接一样操作，允许用户直接使用JDBC编程技术。<br><br>第三、控制资源的使用。如果不使用连接池，每次访问数据库都需要创建一个连接，这样系统的稳定性受系统连接需求影响很大，很容易产生资源浪费和高负载异常。连接池能够使性能最大化，将资源利用控制在一定的水平之下。连接池能控制池中的连接数量，增强了系统在大量用户应用时的稳定性。<br></p>
+<h2 id="第一步，在配置文件中配置连接池"><a href="#第一步，在配置文件中配置连接池" class="headerlink" title="第一步，在配置文件中配置连接池"></a>第一步，在配置文件中配置连接池</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置c3p0连接池--&gt;</span><br><span class="line">    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;</span><br><span class="line">        &lt;!--注入属性值--&gt;</span><br><span class="line">        &lt;property name=&quot;driverClass&quot; value=&quot;com.mysql.jdbc.Driver&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;jdbcUrl&quot; value=&quot;jdbc:mysql://localhost:3306/Spring&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;user&quot; value=&quot;root&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;password&quot; value=&quot;abc3770166&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="dao使用jdbcTemplate"><a href="#dao使用jdbcTemplate" class="headerlink" title="dao使用jdbcTemplate"></a>dao使用jdbcTemplate</h2><h3 id="创建并配置service、dao、jdbcTemplate，在service注入dao，dao注入jdbcTemplate"><a href="#创建并配置service、dao、jdbcTemplate，在service注入dao，dao注入jdbcTemplate" class="headerlink" title="创建并配置service、dao、jdbcTemplate，在service注入dao，dao注入jdbcTemplate"></a>创建并配置service、dao、jdbcTemplate，在service注入dao，dao注入jdbcTemplate</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;userService&quot; class=&quot;cn.lcx.c3p0.UserService&quot;&gt;</span><br><span class="line">        &lt;!--注入Dao对象--&gt;</span><br><span class="line">        &lt;property name=&quot;userDao&quot; ref=&quot;userDao&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;userDao&quot; class=&quot;cn.lcx.c3p0.UserDao&quot;&gt;</span><br><span class="line">        &lt;!--注入jdbcTemplate对象--&gt;</span><br><span class="line">        &lt;property name=&quot;jdbcTemplate&quot; ref=&quot;jdbcTemplate&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;!--创建JdbcTemplate对象--&gt;</span><br><span class="line">    &lt;bean id=&quot;jdbcTemplate&quot; class=&quot;org.springframework.jdbc.core.JdbcTemplate&quot;&gt;</span><br><span class="line">        &lt;!--传递dataSource--&gt;</span><br><span class="line">    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Service类"><a href="#Service类" class="headerlink" title="Service类"></a>Service类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class UserService &#123;</span><br><span class="line"></span><br><span class="line">    private UserDao userDao;</span><br><span class="line"></span><br><span class="line">    public void setUserDao(UserDao userDao) &#123;</span><br><span class="line">        this.userDao = userDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void add()</span><br><span class="line">    &#123;</span><br><span class="line">        userDao.add();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="dao类"><a href="#dao类" class="headerlink" title="dao类"></a>dao类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class UserDao &#123;</span><br><span class="line">    //得到jdbcTemplate对象</span><br><span class="line">    private JdbcTemplate jdbcTemplate;</span><br><span class="line">    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) &#123;</span><br><span class="line">        this.jdbcTemplate = jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">    public void add() &#123;</span><br><span class="line">    String sql= &quot;insert into user values(?,?)&quot;;</span><br><span class="line">    jdbcTemplate.update(sql,&quot;lcx&quot;,&quot;520&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在这里，我们调用userService里的add方法同时并调用userdao里的add方法来为数据库表user中 插入了lcx，520这两个数据<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void test()</span><br><span class="line">&#123;</span><br><span class="line">    ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean1.xml&quot;);</span><br><span class="line">    UserService userService=(UserService) context.getBean(&quot;userService&quot;);</span><br><span class="line">    userService.add();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="Spring的事务管理"><a href="#Spring的事务管理" class="headerlink" title="Spring的事务管理"></a>Spring的事务管理</h1><h2 id="什么是事务？"><a href="#什么是事务？" class="headerlink" title="什么是事务？"></a>什么是事务？</h2><p>事务逻辑上的一组操作,组成这组操作的各个逻辑单元,要么一起成功,要么一起失败</p>
+<h2 id="事务特性"><a href="#事务特性" class="headerlink" title="事务特性"></a>事务特性</h2><ul>
+<li>原子性:强调事务的不可分割</li>
+<li>一致性: 事务的执行的前后数据的完整性保持一致</li>
+<li>隔离性: 一个事务执行的过程中,不应该受到其他事务的干扰</li>
+<li>持久性: 事务一旦结束,数据就持久到数据库<h2 id="如果不考虑隔离性引发安全性问题"><a href="#如果不考虑隔离性引发安全性问题" class="headerlink" title="如果不考虑隔离性引发安全性问题:"></a>如果不考虑隔离性引发安全性问题:</h2></li>
+<li>脏读：一个事务读到了另一个事务的未提交的数据</li>
+<li>不可重复读：一个事务读到了另一个事务已经提交的 update 的数据导致多次查询结果不一致</li>
+<li>虚读：一个事务读到了另一个事务已经提交的 insert 的数据导致多次查询结果不一致<h1 id="Spring事务管理api"><a href="#Spring事务管理api" class="headerlink" title="Spring事务管理api"></a>Spring事务管理api</h1><h2 id="事务管理两种方式"><a href="#事务管理两种方式" class="headerlink" title="事务管理两种方式"></a>事务管理两种方式</h2><h3 id="编程式事务管理（不用）"><a href="#编程式事务管理（不用）" class="headerlink" title="编程式事务管理（不用）"></a>编程式事务管理（不用）</h3><h3 id="声明式事务管理"><a href="#声明式事务管理" class="headerlink" title="声明式事务管理"></a>声明式事务管理</h3>(1)基于xml配置文件的实现<br>(2)基于注解的实现<h1 id="以转账为例来测试Spring的事务管理"><a href="#以转账为例来测试Spring的事务管理" class="headerlink" title="以转账为例来测试Spring的事务管理"></a>以转账为例来测试Spring的事务管理</h1></li>
+<li>首先搭建环境，我们创建一个数据库的表，添加数据<br><img src="/2019/05/11/spring3/2.png" alt></li>
+<li>service层又叫业务逻辑层 </li>
+<li>dao层，单纯对数据库操作层，在dao层不添加业务</li>
+<li>需求：lcx转账1000给mike，结果 lcx 减少1000 mike 增加1000<h2 id="Service类-1"><a href="#Service类-1" class="headerlink" title="Service类"></a>Service类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class OrdersService &#123;</span><br><span class="line">    </span><br><span class="line">    private OrdersDao ordersDao;</span><br><span class="line">    public void setOrdersDao(OrdersDao ordersDao) &#123;</span><br><span class="line">        this.ordersDao = ordersDao;</span><br><span class="line">    &#125;</span><br><span class="line">    //调用dao的方法</span><br><span class="line">    //业务逻辑层，写转账业务</span><br><span class="line">    public void  accountMoney()</span><br><span class="line">    &#123;</span><br><span class="line">        //少1000</span><br><span class="line">        ordersDao.lessMoney();</span><br><span class="line">        //这里会出现异常</span><br><span class="line">        int i= 10/0;</span><br><span class="line">        //多1000</span><br><span class="line">        ordersDao.moreMoney();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Dao类"><a href="#Dao类" class="headerlink" title="Dao类"></a>Dao类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class OrdersDao &#123;</span><br><span class="line">    //注入jdbcTemplate</span><br><span class="line">    private JdbcTemplate jdbcTemplate;</span><br><span class="line">    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) &#123;</span><br><span class="line">        this.jdbcTemplate = jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"> //dao处理数据库的操作，不写业务操作</span><br><span class="line">    //少钱的方法</span><br><span class="line">    public void lessMoney()</span><br><span class="line">    &#123;</span><br><span class="line">        String sql=&quot;update account set salary=salary-? where username=?&quot;;</span><br><span class="line">        jdbcTemplate.update(sql,1000,&quot;lcx&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //多钱的方法</span><br><span class="line">    public void moreMoney()</span><br><span class="line">    &#123;</span><br><span class="line">        String sql=&quot;update account set salary=salary+? where username=?&quot;;</span><br><span class="line">        jdbcTemplate.update(sql,1000,&quot;mike&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>以上方法中，lcx少了1000方法执行后出现了异常，mike并没有增加1000，钱消失了。<h1 id="异常的解决"><a href="#异常的解决" class="headerlink" title="异常的解决"></a>异常的解决</h1>添加事务管理，出现异常回滚<h2 id="xml配置"><a href="#xml配置" class="headerlink" title="xml配置"></a>xml配置</h2><h3 id="第一步，配置事务管理器"><a href="#第一步，配置事务管理器" class="headerlink" title="第一步，配置事务管理器"></a>第一步，配置事务管理器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置事务管理器--&gt;</span><br><span class="line">    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;</span><br><span class="line">        &lt;!--注入dataSource--&gt;</span><br><span class="line">        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="第二步，配置事务增强"><a href="#第二步，配置事务增强" class="headerlink" title="第二步，配置事务增强"></a>第二步，配置事务增强</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置事务增强--&gt;</span><br><span class="line">    &lt;tx:advice id=&quot;txadvice&quot; transaction-manager=&quot;transactionManager&quot;&gt;</span><br><span class="line">        &lt;!--做事务操作--&gt;</span><br><span class="line">        &lt;tx:attributes&gt;</span><br><span class="line">            &lt;!--设置方法匹配规则,在这里匹配所有以account开头的方法--&gt;</span><br><span class="line">            &lt;tx:method name=&quot;account*&quot;/&gt;</span><br><span class="line">        &lt;/tx:attributes&gt;</span><br><span class="line">    &lt;/tx:advice&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="第三步，配置切面"><a href="#第三步，配置切面" class="headerlink" title="第三步，配置切面"></a>第三步，配置切面</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置切面--&gt;</span><br><span class="line">    &lt;aop:config&gt;</span><br><span class="line">        &lt;!--切入点--&gt;</span><br><span class="line">        &lt;aop:pointcut id=&quot;pointcut1&quot; expression=&quot;execution(* cn.lcx.service.OrdersService.*(..))&quot;&gt;&lt;/aop:pointcut&gt;</span><br><span class="line">       &lt;!--切面--&gt;</span><br><span class="line">        &lt;aop:advisor advice-ref=&quot;txadvice&quot; pointcut-ref=&quot;pointcut1&quot;/&gt;</span><br><span class="line">    &lt;/aop:config&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="注解配置"><a href="#注解配置" class="headerlink" title="注解配置"></a>注解配置</h2><h3 id="配置文件配置如下："><a href="#配置文件配置如下：" class="headerlink" title="配置文件配置如下："></a>配置文件配置如下：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置事务管理器--&gt;</span><br><span class="line">    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;</span><br><span class="line">        &lt;!--注入dataSource--&gt;</span><br><span class="line">        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;!--开启事务注解--&gt;</span><br><span class="line">    &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;&gt;&lt;/tx:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="在要使用的事务的方法所在类上添加注解"><a href="#在要使用的事务的方法所在类上添加注解" class="headerlink" title="在要使用的事务的方法所在类上添加注解"></a>在要使用的事务的方法所在类上添加注解</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Transactional</span><br><span class="line">public class OrdersService &#123;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-05-11T10:00:41.816Z" itemprop="dateUpdated">2019-05-11 18:00:41</time>
+</span><br>
+
+
+        
+        <br>原始链接：<a href="/2019/05/11/spring3/" target="_blank" rel="external">https://nibiru123.github.io/2019/05/11/spring3/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://nibiru123.github.io">
+            <img src="/img/avatar.jpg" alt="nibiru">
+            nibiru
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java框架/">Java框架</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSH/">SSH</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://nibiru123.github.io/2019/05/11/spring3/&title=《Spring学习笔记（3）》 — xi's Blog&pic=https://nibiru123.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://nibiru123.github.io/2019/05/11/spring3/&title=《Spring学习笔记（3）》 — xi's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nibiru123.github.io/2019/05/11/spring3/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Spring学习笔记（3）》 — xi's Blog&url=https://nibiru123.github.io/2019/05/11/spring3/&via=https://nibiru123.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://nibiru123.github.io/2019/05/11/spring3/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/05/10/spring2/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Spring学习笔记（2）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "kVqOakD1xrxY7x1LK74NuNGW-gzGzoHsz",
+            appKey: "WT0PB9mbrqIWprJcHGzgaz07",
+            avatar: "mm",
+            placeholder: "说点什么吧！（别忘了你的昵称哦~）",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>nibiru &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://nibiru123.github.io/2019/05/11/spring3/&title=《Spring学习笔记（3）》 — xi's Blog&pic=https://nibiru123.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://nibiru123.github.io/2019/05/11/spring3/&title=《Spring学习笔记（3）》 — xi's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nibiru123.github.io/2019/05/11/spring3/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Spring学习笔记（3）》 — xi's Blog&url=https://nibiru123.github.io/2019/05/11/spring3/&via=https://nibiru123.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://nibiru123.github.io/2019/05/11/spring3/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://nibiru123.github.io/2019/05/11/spring3/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
