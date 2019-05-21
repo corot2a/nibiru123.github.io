@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://nibiru123.github.io/"/>
-  <updated>2019-05-11T10:00:41.816Z</updated>
+  <updated>2019-05-21T09:41:51.558Z</updated>
   <id>https://nibiru123.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C语言指针练习</title>
+    <link href="https://nibiru123.github.io/2019/05/21/point01/"/>
+    <id>https://nibiru123.github.io/2019/05/21/point01/</id>
+    <published>2019-05-21T15:28:20.000Z</published>
+    <updated>2019-05-21T09:41:51.558Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//使用指针，实现输入三个整数，将这三个整数按照由大到小的顺序输出</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">//定义交换函数</span><br><span class="line">void swap(int *p1,int *p2)</span><br><span class="line">&#123;</span><br><span class="line">int temp;</span><br><span class="line">temp= *p1;</span><br><span class="line">*p1 = *p2;</span><br><span class="line">*p2 = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void exchange(int *pt1,int *pt2,int *pt3)</span><br><span class="line">&#123;</span><br><span class="line">//从小到大排序，调用函数swap函数</span><br><span class="line">if(*pt1 &lt; *pt2)</span><br><span class="line">&#123;</span><br><span class="line">swap(pt1,pt2);</span><br><span class="line">&#125;</span><br><span class="line">if(*pt1 &lt; *pt3)</span><br><span class="line">&#123;</span><br><span class="line">swap(pt1,pt3);</span><br><span class="line">&#125;</span><br><span class="line">if(*pt2 &lt; *pt3)</span><br><span class="line">&#123;</span><br><span class="line">swap(pt2,pt3);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line"></span><br><span class="line">int a,b,c,*q1,*q2,*q3;</span><br><span class="line">printf(&quot;请输入三个数\n&quot;);</span><br><span class="line">scanf(&quot;%d %d %d&quot;,&amp;a,&amp;b,&amp;c);</span><br><span class="line">q1=&amp;a;</span><br><span class="line">q2=&amp;b;</span><br><span class="line">q3=&amp;c;</span><br><span class="line">exchange(q1,q2,q3);</span><br><span class="line">printf(&quot;%d,%d,%d&quot;,a,b,c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//使用结构体指针变量输出学生信息</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">struct student&#123;</span><br><span class="line">int num;</span><br><span class="line">char name[20];</span><br><span class="line">char sex;</span><br><span class="line">int age;</span><br><span class="line">float score;</span><br><span class="line">&#125;;</span><br><span class="line">int main() &#123;</span><br><span class="line">//给结构体变量赋值</span><br><span class="line">struct student student1=&#123;</span><br><span class="line">1,</span><br><span class="line">&quot;lichengxi&quot;,</span><br><span class="line">&apos;M&apos;,</span><br><span class="line">20,</span><br><span class="line">99.5</span><br><span class="line">&#125;;</span><br><span class="line">//定义一个结构体指针变量</span><br><span class="line">struct student *pstu;</span><br><span class="line">//把student1的地址赋给pstu</span><br><span class="line">pstu = &amp;student1;</span><br><span class="line">printf(&quot;%d\n&quot;,pstu-&gt;num);</span><br><span class="line">printf(&quot;%s\n&quot;,pstu-&gt;name);</span><br><span class="line">printf(&quot;%c\n&quot;,pstu-&gt;sex);</span><br><span class="line">printf(&quot;%d\n&quot;,pstu-&gt;age);</span><br><span class="line">printf(&quot;%f\n&quot;,pstu-&gt;score);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//使用指针输出数组里的内容</span><br><span class="line">//下标和指针的关系:如果p是指针变量，则p[i]=*(p+i)</span><br><span class="line">//c语言中数组名代表数组的首地址</span><br><span class="line">//因此p=&amp;a[0] == p=a</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">int a[10];</span><br><span class="line">int *p,i;</span><br><span class="line">printf(&quot;请输入十个数\n&quot;);</span><br><span class="line">for(i=0;i&lt;10;i++)</span><br><span class="line">&#123;</span><br><span class="line">scanf(&quot;%d&quot;,&amp;a[i]);</span><br><span class="line">&#125;</span><br><span class="line">printf(&quot;\n&quot;);</span><br><span class="line">for(p=a;p&lt;(a+10);p++)</span><br><span class="line">&#123;</span><br><span class="line">printf(&quot;%d&quot;,*p);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;1&quot;&gt;&lt;a href=&quot;#1&quot; class=&quot;headerlink&quot; title=&quot;1&quot;&gt;&lt;/a&gt;1&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span clas
+      
+    
+    </summary>
+    
+      <category term="指针" scheme="https://nibiru123.github.io/categories/%E6%8C%87%E9%92%88/"/>
+    
+    
+      <category term="学习笔记" scheme="https://nibiru123.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="C语言" scheme="https://nibiru123.github.io/tags/C%E8%AF%AD%E8%A8%80/"/>
+    
+  </entry>
   
   <entry>
     <title>Spring学习笔记（3）</title>
@@ -186,9 +213,9 @@
       <category term="教程" scheme="https://nibiru123.github.io/categories/%E6%95%99%E7%A8%8B/"/>
     
     
-      <category term="hexo" scheme="https://nibiru123.github.io/tags/hexo/"/>
-    
       <category term="博客配置" scheme="https://nibiru123.github.io/tags/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE/"/>
+    
+      <category term="hexo" scheme="https://nibiru123.github.io/tags/hexo/"/>
     
   </entry>
   
@@ -273,9 +300,9 @@
       <category term="教程" scheme="https://nibiru123.github.io/categories/%E6%95%99%E7%A8%8B/"/>
     
     
-      <category term="博客安装" scheme="https://nibiru123.github.io/tags/%E5%8D%9A%E5%AE%A2%E5%AE%89%E8%A3%85/"/>
-    
       <category term="hexo" scheme="https://nibiru123.github.io/tags/hexo/"/>
+    
+      <category term="博客安装" scheme="https://nibiru123.github.io/tags/%E5%8D%9A%E5%AE%A2%E5%AE%89%E8%A3%85/"/>
     
   </entry>
   
